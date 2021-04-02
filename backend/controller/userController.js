@@ -25,10 +25,10 @@ async function createUser(req, res){
 async function getUserById(req, res){
     try{
         let uid = req.params.uid;
-        let userObj = await userModel.findById(uid);
+        let user = await userModel.findById(uid);
         res.json({
             message:"Got User Successfully !!!",
-            userObj
+            user
         })
     }
     catch(error){

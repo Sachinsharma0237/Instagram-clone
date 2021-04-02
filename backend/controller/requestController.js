@@ -166,9 +166,9 @@ async function deleteFollowing(req, res) {
     try {
         let uid = req.params.uid;
         let { toBeUnfollowed } = req.body;
-        let userFromFollowingCollection = await followingModel.find({ uid: uid, followId: toBeUnfollowed, isAccepted: true }).exec();
+        let unfollowUser = await followingModel.find({ uid: uid, followId: toBeUnfollowed, isAccepted: true }).exec();
 
-        if (userFromFollowingCollection[0] != null) {
+        if (unfollowUser[0] != null) {
             let unfollowedUserFromFollowing = await followingModel.deleteOne({ uid: uid, followId: toBeUnfollowed, isAccepted: true });
             let unfollowedUserFromFollower = await followerModel.deleteOne({ followerId: uid, uid: toBeUnfollowed });
             res.json({
@@ -307,9 +307,6 @@ async function getSuggestions(req, res) {
             message:"Successfully got All Suggestions",
             suggestions
         })
-
-
-
 
     }
     catch (error) {
