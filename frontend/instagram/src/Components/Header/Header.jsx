@@ -1,25 +1,38 @@
 import React, { Component } from 'react';
 import './Header.css';
+import { Link } from 'react-router-dom';
 
 class Header extends Component {
     state = {  }
     render() { 
-        return ( <div className="header">
+        return (  
+        <div className="header">
+            <Link to="/">
             <div className="logo">
-                <img src="logoNew.png" alt="logo.png"/>
+            <img src="logoNew.png" alt="logo.png"/>
             </div>
+            </Link>
+            
             <div className="search-box">
             <input type="text" placeholder="🔎 Search" name="" id=""/>
             </div>
             <div className="nav-links">
                 <ul>
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/profile">Profile</a></li>
-                    <li><a href="/settings">Settings</a></li>
-                    <li><a href="/logout">Logout</a></li>
+                    <li>
+                         <Link to="/">Home</Link>
+                    </li>
+                    <li>
+                         <Link to="/profile">Profile</Link>
+                    </li>
+                    <li>
+                        <Link to="/settings">Settings</Link>
+                    </li>
+                    <li>
+                        <Link to="/logout">Logout</Link>
+                    </li>
                 </ul>
             </div>
-        </div> );
+        </div>);
     }
 }
  

@@ -6,9 +6,10 @@
 #no-post-tag{
     position: fixed;
     display: flex;
-    justify-content :space-around;
-    align-items:flex-end;
-    top: 250px;
-    width: 9rem; height: 9rem;
-    color: limegreen;
+    justify-content: space-around;
+    align-items: flex-end;
+    top: 175px;
+    width: 9rem;
+    left: 453px;
+    height: 9rem;
 }
