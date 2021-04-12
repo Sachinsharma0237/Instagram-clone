@@ -12,19 +12,31 @@ class Post extends Component {
         likes : []
      };
     componentDidMount(){
-        let post = this.props.post;
-        let postUser = this.props.post.uid
-        axios.get(`/api/user/${postUser}`).then( obj =>{
-            let postUser = obj.data.user;
+        if( this.props.user ){
             this.setState({
-                userPhoto: postUser.profilePic,
-                username: postUser.username,
-                caption: post.caption,
-                postImage: post.postImage,
-                comment: post.comments,
-                likes: post.likes
+                username : this.props.user.username,
+                caption: this.props.post.caption,
+                userPhoto: this.props.user.profilePic,
+                postImage: this.props.post.postImage,
+                comments: this.props.post.comments,
+                likes: this.props.post.likes
             })
-        })
+        }else{
+            let post = this.props.post;
+            let postUser = this.props.post.uid
+            axios.get(`/api/user/${postUser}`).then( obj =>{
+                let postUser = obj.data.user;
+                this.setState({
+                    userPhoto: postUser.profilePic,
+                    username: postUser.username,
+                    caption: post.caption,
+                    postImage: post.postImage,
+                    comment: post.comments,
+                    likes: post.likes
+                })
+            })
+
+        }
     }
 
     render() { 

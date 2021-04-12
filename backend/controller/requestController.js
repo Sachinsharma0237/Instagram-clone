@@ -224,7 +224,7 @@ async function getAllFollowing(req, res) {
         }
         if (myFollowing.length) {
             res.json({
-                message: "Successfully got All Followers",
+                message: "Successfully got All Followings",
                 myFollowing
             })
         } else {

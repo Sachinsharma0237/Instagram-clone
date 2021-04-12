@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import './Home.css';
 import Feeds from '../Feeds/Feeds';
 import HomeProfile from '../HomeProfile/HomeProfile';
-import axios from 'axios';
-import uid from '../../uid';
 
 class Home extends Component {
     state = { 
@@ -11,17 +9,13 @@ class Home extends Component {
      }
 
      componentDidMount(){
-        axios.get(`/api/user/${uid}`).then( obj=>{
-            let user = obj.data.user;
-            this.setState({
-                user
-            })
+        this.setState({
+            user : this.props.user
         })
      }
 
     render() { 
         return ( <div className="home">
-
             {this.state.user ? (
             <React.Fragment>
                 <Feeds user={this.state.user}></Feeds>
