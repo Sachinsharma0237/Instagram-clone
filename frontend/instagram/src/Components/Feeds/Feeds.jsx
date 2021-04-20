@@ -2,7 +2,6 @@ import axios from 'axios';
 import React, { Component } from 'react';
 import Post from '../Post/Post';
 import './Feeds.css';
-import uid from '../../uid';
 
 class Feeds extends Component {
     state = { 
@@ -36,7 +35,7 @@ class Feeds extends Component {
          let fileObject = this.fileInput.current.files[0];
          let formData = new FormData();
          formData.append('post', fileObject);
-         formData.append('uid', uid);
+         formData.append('uid', this.props.user["_id"]);
          formData.append('caption', this.state.captionInput);
          axios.post("/api/post", formData).then( obj=>{
             if( obj.data.postCreated){

@@ -1,18 +1,14 @@
 const express = require("express");
-const cookie = require("cookie-session");
+const app = express();
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth2").Strategy;
-const { CLIENT_ID, CLIENT_PW } = require('./config/secrets');
-const { postRouter } = require("./router/postRouter");
-const { requestRouter } = require("./router/requestRouter");
-const { userRouter } = require("./router/userRouter");
-const userModel = require("./model/userModel");
-const { authRouter } = require("./router/authRouter");
-const app = express();
+const cookie = require("cookie-session");
+let { CLIENT_ID, CLIENT_PW } = require('./config/secrets');
+let { mongoose } = require('../../../../backend/model/db');
+let userModel = require('../../../../backend/model/userModel'); //name, username, bio, email, password
+
 app.use( express.static("public") );
-app.use(  express.json() );
-
-
+app.use( express.json() );
 /** Cookie-Session */
 app.use( cookie({
     maxAge: 24*24*100,
@@ -21,26 +17,25 @@ app.use( cookie({
 app.use( passport.initialize() );
 app.use( passport.session() );
 
-
 /** Serialize */
 passport.serializeUser( function(user, done){
     console.log("Inside Serialize User");
     done( null, user );
 })
- 
+
 /** Deserialize */
 passport.deserializeUser( function(user, done){
     console.log("Inside Deserialize User");
     done( null, user );
 })
 
+//------------------------------------------------------Passport oAuth Code--------------------------------------//
 
-//----------------------------------------Passport oAuth Code-----------------------------------------//
 passport.use(
     new GoogleStrategy({
     clientID:     CLIENT_ID,
     clientSecret: CLIENT_PW,
-    callbackURL: "http://localhost:4000/auth/callback",
+    callbackURL: "http://localhost:3000/auth/callback",
     passReqToCallback   : true
   },
   async function(request, accessToken, refreshToken, profile, done){
@@ -57,9 +52,8 @@ passport.use(
                     name: profile.displayName,
                     username: profile.email,
                     email: profile.email,
-                    bio: "Hello Guys, I'm New On Sachin's Instagram",
+                    bio: "Hello Guys, I'm New On Sachin's Instagram Clone",
                     password:"0123456789",
-                    profilePic: './public/images/users/default.png'
                 }
                 let userCreated = await userModel.create(userObject);
                 done(null, userCreated)
@@ -70,18 +64,25 @@ passport.use(
       }
   }
 ));
-//----------------------------------------Passport oAuth Code-----------------------------------------//
+
+//------------------------------------------------------Passport oAuth Code--------------------------------------//
 
 
 
-
-app.use("/api/user", userRouter);
-app.use("/api/request", requestRouter);
-app.use("/api/post", postRouter);
-app.use("/auth", authRouter);
-
-
-let port = process.env.PORT || 4000
-app.listen(port, function(req, res){
-    console.log(`Server Started at ${port}`);
+app.get("/auth/google", passport.authenticate('google', {scope:['email', 'profile']}), (req, res)=>{
+    res.send("1st Request");
 })
+
+app.get("/auth/callback", passport.authenticate('google') ,function(req, res){
+    res.redirect("/");
+})
+
+app.get("/checkAuth", function(req, res){
+    if( req.user ){
+        res.send("Welcome to HomePage " + JSON.stringify(req.user));
+    }else{
+        res.send("you're not Logged In");
+    }
+})
+
+app.listen(3000, ()=>{console.log("Server Started At Port 3000")});

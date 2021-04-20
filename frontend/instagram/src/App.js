@@ -3,14 +3,28 @@ import Header from './Components/Header/Header';
 import Home from './Components/Home/Home';
 import Profile from './Components/Profile/Profile';
 import Settings from './Components//Settings/Settings';
-import uid from './uid';
 import axios from 'axios';
 import { BrowserRouter as Router, Switch, Route, Link, Redirect } from 'react-router-dom';
+import Login from './Components/Login/Login';
 
 
 class App extends Component {
   state = {
-    user : null
+    user : null,
+    isAuth : false
+  }
+
+  login=()=>{
+    window.location = "http://localhost:4000/auth/google";
+  }
+
+  logout=()=>{
+    axios.get("auth/destroyCookie").then( obj=>{
+      console.log(obj);
+    })
+    this.setState({
+      isAuth : false
+    })
   }
 
   updateUser=(updateUser)=>{
@@ -20,32 +34,33 @@ class App extends Component {
   }
 
   componentDidMount(){
-    axios.get(`/api/user/${uid}`).then( obj=>{
-      let user = obj.data.user;
-      this.setState({
-          user
-      })
-  })
+    axios.get("/auth/checkAuth").then( obj=>{
+        if(obj.data.isAuth){
+          this.setState({
+            isAuth: true,
+            user: obj.data.user
+          })
+        }
+    })
   }
 
 
   render() {
     return (
       <Router>
-      {this.state.user ?  (
         <div className="app">
-        <Header />
+        <Header isAuth={this.state.isAuth} logout = {this.logout} />
         <Switch>
           <Route path="/" exact>
-            <Home user={this.state.user} />
+            {this.state.isAuth ? <Home user={this.state.user} /> : <Login login={this.login}></Login>}
           </Route>
 
           <Route path="/profile" exact>
-            <Profile user={this.state.user} />
+          {this.state.isAuth ? <Profile user={this.state.user} /> : <Login login={this.login}></Login>}
           </Route>
 
           <Route path="/settings" exact>
-            <Settings user={this.state.user} updateUser={this.updateUser} />
+          {this.state.isAuth ? <Settings user={this.state.user} updateUser={this.updateUser} /> : <Login login={this.login}></Login>}
           </Route>
 
           <Route path="*" exact>
@@ -54,7 +69,6 @@ class App extends Component {
 
         </Switch>
       </div>
-      ) : ( <h1>Loading....</h1> ) }
       </Router>);   
   }
 }

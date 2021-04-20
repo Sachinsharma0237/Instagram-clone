@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import "./Settings.css";
 import axios from "axios";
-import uid from "../../uid";
 
 class Settings extends Component {
   state = {
