@@ -33,8 +33,8 @@
     color: rgba(var(--i1d, 38, 38, 38), 1);
     position: fixed;
     top: 75px;
-    right: 9px;
-    font-size: 15px;
+    right: 0px;
+    font-size: 14px;
   }
   .myname {
     color: rgba(var(--f52, 142, 142, 142), 1);

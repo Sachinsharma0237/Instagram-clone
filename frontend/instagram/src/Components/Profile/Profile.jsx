@@ -65,15 +65,15 @@ class Profile extends Component {
                 </div>
                 <div className="profile-right">
                     <div className="profile-post" onClick={()=>{this.onViewChangeHandler("POSTS")}}>
-                        <div className="count">{this.state.posts.length}</div>
+                        {this.state.posts ? <div className="count">{this.state.posts.length}</div> : <div className="count">0</div> }
                         <h3>Post</h3>
                     </div>
                     <div className="profile-follower" onClick={()=>{this.onViewChangeHandler("FOLLOWERS")}}>
-                    <div className="count">{this.state.follower.length}</div>
+                        {this.state.follower ? <div className="count">{this.state.follower.length}</div> : <div className="count">0</div> }
                         <h3>Follower</h3>
                     </div>
                     <div className="profile-following" onClick={()=>{this.onViewChangeHandler("FOLLOWING")}}>
-                    <div className="count">{this.state.following.length}</div>
+                        {this.state.following ? <div className="count">{this.state.following.length}</div> : <div className="count">0</div> }
                         <h3>Following</h3>
                     </div>
                 </div>

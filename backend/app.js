@@ -58,8 +58,7 @@ passport.use(
                     username: profile.email,
                     email: profile.email,
                     bio: "Hello Guys, I'm New On Sachin's Instagram",
-                    password:"0123456789",
-                    profilePic: './public/images/users/default.png'
+                    password:"0123456789"
                 }
                 let userCreated = await userModel.create(userObject);
                 done(null, userCreated)

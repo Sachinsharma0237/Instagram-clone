@@ -22,7 +22,7 @@ class HomeProfile extends Component {
         return ( <div className="home-profile">
             <div className="user-info">
                 <div className="user-image">
-                    <img src={profilePic} alt="user.png"/>
+                    <img src={profilePic} alt=""/>
                 </div>
                 <div className="name">
                     <div className="myusername"><strong>{username}</strong> 
